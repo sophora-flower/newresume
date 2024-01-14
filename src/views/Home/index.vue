@@ -9,8 +9,6 @@ const add = () => {
 </script>
 
 <template>
-  <!-- 头部 -->
-
   <!-- 主体 -->
 
   <div class="main">
