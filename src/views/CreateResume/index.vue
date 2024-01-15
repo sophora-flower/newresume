@@ -17,6 +17,7 @@ const form = ref({
   tel: "",
   email: "",
   desc: "",
+  mode: "",
 })
 
 const options = [
@@ -47,17 +48,24 @@ const rules = {
   desc: [{ required: true, message: "请输入技能", trigger: "blur" }],
 }
 //编辑回显
-const echoResume = resumeStore.resume[route.query.id]
+const echoResume = resumeStore.resume[route.query.index]
 if (echoResume) {
   form.value = echoResume
-  resumeStore.deleteResume(route.query.id)
+  resumeStore.deleteResume(route.query.inedx)
 }
 
-const addResume = async () => {
+const addResume1 = async () => {
   await formModel.value.validate()
+  form.value.mode = 1
   resumeStore.saveResume(form.value)
   form.value = {}
-
+  router.replace({ path: "/myresume" })
+}
+const addResume2 = async () => {
+  await formModel.value.validate()
+  form.value.mode = 2
+  resumeStore.saveResume(form.value)
+  form.value = {}
   router.replace({ path: "/myresume" })
 }
 
@@ -136,7 +144,8 @@ const back = () => {
           </el-form-item>
         </el-form>
 
-        <el-button type="primary" @click="addResume">生成简历</el-button>
+        <el-button type="primary" @click="addResume1">选择蓝色模板</el-button>
+        <el-button type="primary" @click="addResume2">选择绿色模板</el-button>
       </el-main>
     </el-container>
   </div>

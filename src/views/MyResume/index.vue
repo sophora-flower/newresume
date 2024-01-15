@@ -5,17 +5,9 @@ import { useRouter } from "vue-router"
 const router = useRouter()
 const resumeStore = UseResumeStore()
 
-const confirmEvent = (index) => {
-  resumeStore.deleteResume(index)
-}
-
 const go = () => router.push("/createresume")
 
 const count = resumeStore.resume.length
-
-const edit = (index) => {
-  router.push({ path: "/createresume", query: { id: index } })
-}
 </script>
 
 <template>
@@ -28,36 +20,12 @@ const edit = (index) => {
       v-for="(item, index) in resumeStore.resume"
       :key="index"
     >
-      <h1>个人简历</h1>
-      <div class="person">
-        <h3>个人资料</h3>
-        <ul>
-          <li>姓名：{{ item.username }}</li>
-          <li>性别：{{ item.gender }}</li>
-          <li>年龄：{{ item.age }}</li>
-          <li>电话：{{ item.tel }}</li>
-          <li>邮箱：{{ item.email }}</li>
-          <li>城市：{{ item.city }}</li>
-        </ul>
-      </div>
-      <div class="desc">
-        <div class="left">技能</div>
-        <div class="right">{{ item.desc }}</div>
-      </div>
-      <div class="action">
-        <el-button plain @click="edit(index)">编辑</el-button>
-        <el-popconfirm
-          confirm-button-text="Yes"
-          cancel-button-text="No"
-          icon-color="#626AEF"
-          title="确定删除吗？"
-          @confirm="confirmEvent(index)"
-        >
-          <template #reference>
-            <el-button>删除</el-button>
-          </template>
-        </el-popconfirm>
-      </div>
+      <ResumeBlue
+        v-if="item.mode === 1"
+        :item="item"
+        :index="index"
+      ></ResumeBlue>
+      <ResumeGreen v-else :item="item" :index="index"></ResumeGreen>
     </div>
     <div class="toast" v-else>
       <p>空空如也，快去生成简历吧</p>
@@ -92,7 +60,7 @@ const edit = (index) => {
   }
   .resume {
     width: 500px;
-    height: 460px;
+    height: 610px;
     border: 1px solid #030f96;
     margin-bottom: 30px;
     &:hover {
